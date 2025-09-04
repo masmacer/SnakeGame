@@ -1,0 +1,98 @@
+body {
+    background: linear-gradient(120deg, #222 60%, #2c3e50 100%);
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Segoe UI', 'PingFang SC', 'Arial', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+h1 {
+    color: #fff;
+    margin-top: 40px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+.game-panel {
+    background: rgba(255,255,255,0.04);
+    border-radius: 16px;
+    box-shadow: 0 4px 24px #0006;
+    padding: 24px 32px 16px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 18px;
+}
+.game-controls {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 10px;
+}
+.game-controls label {
+    color: #fff;
+    font-size: 17px;
+    font-weight: 500;
+}
+.game-controls select {
+    font-size: 16px;
+    padding: 2px 10px;
+    border-radius: 4px;
+    border: 1px solid #aaa;
+    background: #222;
+    color: #fff;
+    outline: none;
+    transition: border 0.2s;
+}
+.game-controls select:focus {
+    border-color: #4caf50;
+}
+.game-controls #score {
+    color: #ffd600;
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 10px;
+    text-shadow: 0 2px 8px #222;
+}
+.game-canvas-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+canvas {
+    background: #333;
+    display: block;
+    margin: 0 auto 12px auto;
+    border: 2px solid #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px #0008;
+}
+#restart {
+    padding: 8px 24px;
+    font-size: 17px;
+    border: none;
+    background: linear-gradient(90deg, #4caf50 60%, #388e3c 100%);
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 4px;
+    box-shadow: 0 2px 8px #2224;
+    transition: background 0.2s;
+}
+#restart:active {
+    background: #388e3c;
+}
+.game-desc {
+    color: #fff;
+    max-width: 420px;
+    text-align: left;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    line-height: 1.7;
+    background: rgba(0,0,0,0.18);
+    padding: 14px 18px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px #0003;
+}

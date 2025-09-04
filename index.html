@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title>贪吃蛇小游戏</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1 style="letter-spacing:2px;font-size:2.2em;color:#fff;text-shadow:0 2px 8px #222;">贪吃蛇小游戏</h1>
+    <div class="game-panel">
+        <div class="game-controls">
+            <label for="difficulty">选择难度：</label>
+            <select id="difficulty">
+                <option value="150">简单</option>
+                <option value="100" selected>普通</option>
+                <option value="60">困难</option>
+            </select>
+            <span id="score">分数：0</span>
+        </div>
+        <div class="game-canvas-wrap">
+            <canvas id="game" width="400" height="400"></canvas>
+            <button id="restart" style="display:none;">重新开始</button>
+        </div>
+    </div>
+    <div class="game-desc">
+        <strong>玩法说明：</strong><br>
+        1. 使用键盘方向键控制蛇移动。<br>
+        2. 吃到红色方块即可得分，蛇会变长。<br>
+        3. 撞到墙壁或自己则游戏结束。<br>
+        4. 点击“重新开始”按钮可重新游戏。
+    </div>
+    <script src="snake.js"></script>
+</body>
+</html>
