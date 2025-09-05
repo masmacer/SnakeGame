@@ -2,11 +2,13 @@
 <html lang="zh-cn">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
     <title>贪吃蛇小游戏</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body style="overflow-x:hidden;">
     <h1 style="letter-spacing:2px;font-size:2.2em;color:#fff;text-shadow:0 2px 8px #222;">贪吃蛇小游戏</h1>
+    <a href="video.html" style="display:inline-block;margin-bottom:18px;margin-top:8px;padding:10px 28px;font-size:18px;background:linear-gradient(90deg,#4caf50 60%,#388e3c 100%);color:#fff;border-radius:8px;text-decoration:none;box-shadow:0 2px 8px #2224;transition:background 0.2s;">抖音视频下载工具</a>
     <div class="game-panel">
         <div class="game-controls">
             <label for="difficulty">选择难度：</label>
@@ -18,7 +20,9 @@
             <span id="score">分数：0</span>
         </div>
         <div class="game-canvas-wrap">
-            <canvas id="game" width="400" height="400"></canvas>
+            <div style="width:100vw;max-width:420px;">
+                <canvas id="game" style="width:100%;height:auto;max-width:100vw;max-height:70vw;min-width:220px;min-height:220px;" width="400" height="400"></canvas>
+            </div>
             <button id="restart" style="display:none;">重新开始</button>
         </div>
     </div>
@@ -30,5 +34,17 @@
         4. 点击“重新开始”按钮可重新游戏。
     </div>
     <script src="snake.js"></script>
+    <script>
+    // 移动端自适应canvas尺寸
+    function resizeCanvas() {
+        const canvas = document.getElementById('game');
+        let size = Math.min(window.innerWidth, 420, window.innerHeight-180);
+        size = Math.max(size, 220);
+        canvas.width = size;
+        canvas.height = size;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    </script>
 </body>
 </html>

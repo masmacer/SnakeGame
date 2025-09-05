@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta charset="UTF-8">
+	<title>抖音视频下载工具</title>
+	<meta name="viewport" content="width=400,initial-scale=1">
+	<style>
+		body {
+			background: #23272f;
+			color: #fff;
+			font-family: 'Segoe UI', 'PingFang SC', Arial, sans-serif;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			min-height: 100vh;
+			margin: 0;
+		}
+		.container {
+			background: #2d313a;
+			border-radius: 12px;
+			box-shadow: 0 4px 24px #0006;
+			padding: 32px 24px 24px 24px;
+			margin-top: 60px;
+			width: 380px;
+			max-width: 96vw;
+		}
+		h2 {
+			text-align: center;
+			margin-bottom: 18px;
+			letter-spacing: 2px;
+		}
+		input[type="text"] {
+			width: 100%;
+			padding: 10px 12px;
+			border-radius: 6px;
+			border: 1px solid #444;
+			font-size: 16px;
+			margin-bottom: 16px;
+			background: #23272f;
+			color: #fff;
+			outline: none;
+			box-sizing: border-box;
+		}
+		button {
+			width: 100%;
+			padding: 10px 0;
+			font-size: 17px;
+			background: linear-gradient(90deg, #4caf50 60%, #388e3c 100%);
+			color: #fff;
+			border: none;
+			border-radius: 6px;
+			cursor: pointer;
+			margin-bottom: 10px;
+			box-shadow: 0 2px 8px #2224;
+			transition: background 0.2s;
+		}
+		button:active {
+			background: #388e3c;
+		}
+		.result {
+			margin-top: 18px;
+			background: #23272f;
+			border-radius: 8px;
+			padding: 14px 10px;
+			font-size: 15px;
+			word-break: break-all;
+		}
+		.video-preview {
+			margin-top: 10px;
+			text-align: center;
+		}
+		.video-preview video {
+			max-width: 100%;
+			border-radius: 8px;
+			margin-bottom: 8px;
+		}
+		.error {
+			color: #ff5252;
+			margin-top: 10px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h2>抖音视频下载工具</h2>
+		<input type="text" id="douyinUrl" placeholder="请输入抖音视频链接" autocomplete="off">
+		<button id="fetchBtn">获取下载链接</button>
+		<div id="result" class="result"></div>
+		<div id="preview" class="video-preview"></div>
+		<div id="error" class="error"></div>
+	</div>
+	<script>
+		const fetchBtn = document.getElementById('fetchBtn');
+		const urlInput = document.getElementById('douyinUrl');
+		const resultDiv = document.getElementById('result');
+		const previewDiv = document.getElementById('preview');
+		const errorDiv = document.getElementById('error');
+
+		async function getAwemeId(dyUrl) {
+			const api = 'http://165.227.61.186/api/douyin/web/get_aweme_id?url=' + encodeURIComponent(dyUrl);
+			const res = await fetch(api);
+			if (!res.ok) throw new Error('获取ID失败');
+			const data = await res.json();
+			if (!data.data || typeof data.data !== 'string') throw new Error('未获取到视频ID');
+			return data.data;
+		}
+
+		async function getVideoInfo(awemeId) {
+			const api = 'http://165.227.61.186/api/douyin/web/fetch_one_video?aweme_id=' + awemeId;
+			const res = await fetch(api);
+			if (!res.ok) throw new Error('获取视频信息失败');
+			const data = await res.json();
+			if (!data.data || !data.data.aweme_detail) throw new Error('未获取到视频信息');
+			return data.data.aweme_detail;
+		}
+
+		fetchBtn.onclick = async function() {
+			resultDiv.innerHTML = '';
+			previewDiv.innerHTML = '';
+			errorDiv.textContent = '';
+			const url = urlInput.value.trim();
+			if (!url) {
+				errorDiv.textContent = '请输入抖音视频链接';
+				return;
+			}
+			fetchBtn.disabled = true;
+			fetchBtn.textContent = '获取中...';
+			try {
+				const awemeId = await getAwemeId(url);
+				const detail = await getVideoInfo(awemeId);
+				// 获取视频直链
+				let videoUrl = '';
+				if (detail.video && detail.video.play_addr && detail.video.play_addr.url_list && detail.video.play_addr.url_list.length > 0) {
+					videoUrl = detail.video.play_addr.url_list[0];
+				}
+				if (!videoUrl) throw new Error('未获取到视频直链');
+				// 展示下载按钮和预览
+				resultDiv.innerHTML = `<a href="${videoUrl}" download style="display:inline-block;padding:10px 24px;background:#4caf50;color:#fff;border-radius:6px;text-decoration:none;font-size:17px;box-shadow:0 2px 8px #2224;">下载视频</a>`;
+				previewDiv.innerHTML = `<video src="${videoUrl}" controls></video>`;
+			} catch (e) {
+				errorDiv.textContent = e.message;
+			} finally {
+				fetchBtn.disabled = false;
+				fetchBtn.textContent = '获取下载链接';
+			}
+		};
+	</script>
+</body>
+</html>
