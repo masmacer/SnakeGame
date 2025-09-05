@@ -1,4 +1,3 @@
-
 // 先获取 canvas 和 ctx
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
@@ -13,7 +12,9 @@ canvas.addEventListener('touchstart', function(e) {
         touchStartX = e.touches[0].clientX;
         touchStartY = e.touches[0].clientY;
     }
-}, {passive: true});
+    e.preventDefault(); // 新增：阻止默认滚动
+}, {passive: false}); // passive 必须为 false
+
 canvas.addEventListener('touchend', function(e) {
     if (gameOver) return;
     if (e.changedTouches.length === 1) {
@@ -27,7 +28,8 @@ canvas.addEventListener('touchend', function(e) {
             if (dy < 0 && direction !== 'DOWN') direction = 'UP';
         }
     }
-}, {passive: true});
+    e.preventDefault(); // 新增：阻止默认滚动
+}, {passive: false});
 
 function updateGrid() {
     box = Math.floor(Math.min(canvas.width, canvas.height) / 20);
