@@ -31,6 +31,14 @@ canvas.addEventListener('touchend', function(e) {
     e.preventDefault(); // 新增：阻止默认滚动
 }, {passive: false});
 
+// 提供给移动端按钮的方向控制接口
+window.setDirection = function(dir) {
+    if (gameOver) return;
+    if (dir === 'LEFT' && direction !== 'RIGHT') direction = 'LEFT';
+    if (dir === 'UP' && direction !== 'DOWN') direction = 'UP';
+    if (dir === 'RIGHT' && direction !== 'LEFT') direction = 'RIGHT';
+    if (dir === 'DOWN' && direction !== 'UP') direction = 'DOWN';
+};
 function updateGrid() {
     box = Math.floor(Math.min(canvas.width, canvas.height) / 20);
     cols = Math.floor(canvas.width / box);

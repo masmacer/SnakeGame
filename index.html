@@ -24,6 +24,15 @@
                 <canvas id="game" style="width:100%;height:auto;max-width:100vw;max-height:70vw;min-width:220px;min-height:220px;" width="400" height="400"></canvas>
             </div>
             <button id="restart" style="display:none;">重新开始</button>
+                <!-- 移动端方向操作区域 -->
+                <div class="mobile-controls" style="margin:10px auto 0 auto;max-width:260px;display:flex;flex-direction:column;align-items:center;gap:8px;">
+                    <button class="dir-btn" id="btn-up" style="width:60px;height:44px;">↑</button>
+                    <div style="display:flex;gap:18px;">
+                        <button class="dir-btn" id="btn-left" style="width:60px;height:44px;">←</button>
+                        <button class="dir-btn" id="btn-down" style="width:60px;height:44px;">↓</button>
+                        <button class="dir-btn" id="btn-right" style="width:60px;height:44px;">→</button>
+                    </div>
+                </div>
         </div>
     </div>
     <div class="game-desc">
@@ -34,6 +43,26 @@
         4. 点击“重新开始”按钮可重新游戏。
     </div>
     <script src="snake.js"></script>
+        <script>
+        // 移动端方向按钮事件
+        function mobileDirBind() {
+            var up = document.getElementById('btn-up');
+            var down = document.getElementById('btn-down');
+            var left = document.getElementById('btn-left');
+            var right = document.getElementById('btn-right');
+            if (!up) return;
+            up.addEventListener('touchstart', function(e){window.setDirection && window.setDirection('UP');e.preventDefault();}, {passive:false});
+            down.addEventListener('touchstart', function(e){window.setDirection && window.setDirection('DOWN');e.preventDefault();}, {passive:false});
+            left.addEventListener('touchstart', function(e){window.setDirection && window.setDirection('LEFT');e.preventDefault();}, {passive:false});
+            right.addEventListener('touchstart', function(e){window.setDirection && window.setDirection('RIGHT');e.preventDefault();}, {passive:false});
+            // 兼容点击
+            up.addEventListener('click', function(){window.setDirection && window.setDirection('UP');});
+            down.addEventListener('click', function(){window.setDirection && window.setDirection('DOWN');});
+            left.addEventListener('click', function(){window.setDirection && window.setDirection('LEFT');});
+            right.addEventListener('click', function(){window.setDirection && window.setDirection('RIGHT');});
+        }
+        mobileDirBind();
+        </script>
     <script>
     // 移动端自适应canvas尺寸
     function resizeCanvas() {
