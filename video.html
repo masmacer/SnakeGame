@@ -114,10 +114,50 @@
 			return data.data.aweme_detail;
 		}
 
+		let copyArea = null, copyInput = null, copyBtn = null, copyTip = null;
+
+		function ensureCopyArea() {
+			if (copyArea) return;
+			copyArea = document.createElement('div');
+			copyArea.style.marginTop = '12px';
+			copyArea.style.display = 'flex';
+			copyArea.style.alignItems = 'center';
+			copyInput = document.createElement('input');
+			copyInput.type = 'text';
+			copyInput.readOnly = true;
+			copyInput.style.width = '70%';
+			copyInput.style.padding = '6px 8px';
+			copyInput.style.fontSize = '15px';
+			copyInput.style.borderRadius = '4px';
+			copyInput.style.border = '1px solid #aaa';
+			copyBtn = document.createElement('button');
+			copyBtn.textContent = '复制下载地址';
+			copyBtn.style.marginLeft = '8px';
+			copyBtn.style.padding = '6px 14px';
+			copyBtn.style.fontSize = '15px';
+			copyTip = document.createElement('span');
+			copyTip.textContent = '已复制！';
+			copyTip.style.color = '#4caf50';
+			copyTip.style.marginLeft = '8px';
+			copyTip.style.display = 'none';
+			copyArea.appendChild(copyInput);
+			copyArea.appendChild(copyBtn);
+			copyArea.appendChild(copyTip);
+			resultDiv.parentNode.insertBefore(copyArea, previewDiv);
+			copyBtn.onclick = function() {
+				copyInput.select();
+				copyInput.setSelectionRange(0, 99999);
+				document.execCommand('copy');
+				copyTip.style.display = '';
+				setTimeout(()=>{copyTip.style.display='none';}, 1200);
+			};
+		}
+
 		fetchBtn.onclick = async function() {
 			resultDiv.innerHTML = '';
 			previewDiv.innerHTML = '';
 			errorDiv.textContent = '';
+			if (copyArea) copyArea.style.display = 'none';
 			const url = urlInput.value.trim();
 			if (!url) {
 				errorDiv.textContent = '请输入抖音视频链接';
@@ -137,6 +177,9 @@
 				// 展示下载按钮和预览
 				resultDiv.innerHTML = `<a href="${videoUrl}" download style="display:inline-block;padding:10px 24px;background:#4caf50;color:#fff;border-radius:6px;text-decoration:none;font-size:17px;box-shadow:0 2px 8px #2224;">下载视频</a>`;
 				previewDiv.innerHTML = `<video src="${videoUrl}" controls></video>`;
+				ensureCopyArea();
+				copyInput.value = videoUrl;
+				copyArea.style.display = '';
 			} catch (e) {
 				errorDiv.textContent = e.message;
 			} finally {
